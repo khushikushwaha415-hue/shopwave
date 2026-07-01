@@ -57,7 +57,7 @@ const Signup = () => {
                 required
                 className="w-full px-3.5 py-2.5 rounded-lg outline-none transition border border-gray-200 text-gray-900 bg-white focus:border-indigo-600"
                 style={{ fontSize: "16px" }}
-                placeholder="Khushi Kushwaha"
+                placeholder="Full name"
               />
             </div>
 
