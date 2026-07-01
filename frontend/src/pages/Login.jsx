@@ -29,40 +29,17 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex overflow-x-hidden bg-[#fafaf8]">
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-[#1a1a1a]">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-md flex items-center justify-center bg-indigo-600">
-            <span className="text-white font-semibold text-sm">S</span>
+    <div className="min-h-screen flex items-center justify-center bg-[#fafaf8] px-4 py-12">
+      <div className="w-full max-w-sm">
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-indigo-600 mb-3">
+            <span className="text-white font-semibold text-base">S</span>
           </div>
-          <span className="text-white font-semibold text-lg">ShopWave</span>
+          <h1 className="text-xl font-medium text-gray-900">Welcome back</h1>
+          <p className="text-sm text-gray-500 mt-1">Login to continue shopping</p>
         </div>
 
-        <div>
-          <p className="text-white text-3xl leading-snug font-light mb-4">
-            Everything you need,<br />
-            one cart away.
-          </p>
-          <p className="text-sm text-gray-400">
-            Shop smarter, checkout faster.
-          </p>
-        </div>
-
-        <p className="text-xs text-gray-500">© 2026 ShopWave</p>
-      </div>
-
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 py-12">
-        <div className="w-full max-w-sm">
-          <div className="lg:hidden flex items-center gap-2 mb-10">
-            <div className="w-7 h-7 rounded-md flex items-center justify-center bg-indigo-600">
-              <span className="text-white font-semibold text-xs">S</span>
-            </div>
-            <span className="font-semibold text-gray-900">ShopWave</span>
-          </div>
-
-          <h1 className="text-2xl font-medium mb-1 text-gray-900">Welcome back</h1>
-          <p className="text-sm mb-8 text-gray-500">Login to continue shopping</p>
-
+        <div className="bg-white border border-gray-200 rounded-xl p-6 sm:p-8">
           {error && (
             <div className="text-sm px-4 py-3 rounded-lg mb-5 bg-red-50 text-red-600">
               {error}
@@ -104,14 +81,14 @@ const Login = () => {
               {loading ? "Logging in..." : "Log in"}
             </button>
           </form>
-
-          <p className="text-sm mt-7 text-center text-gray-500">
-            Don't have an account?{" "}
-            <Link to="/signup" className="font-medium text-indigo-600">
-              Sign up
-            </Link>
-          </p>
         </div>
+
+        <p className="text-sm mt-6 text-center text-gray-500">
+          Don't have an account?{" "}
+          <Link to="/signup" className="font-medium text-indigo-600">
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   );
