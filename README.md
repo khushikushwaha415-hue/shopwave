@@ -98,4 +98,4 @@ ZIP: any 5 digits
 
 ## Author
 
-Built by Khushi Kushwaha
+Built by Khushi
