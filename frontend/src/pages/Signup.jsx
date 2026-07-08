@@ -7,6 +7,8 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -16,6 +18,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -57,7 +65,7 @@ const Signup = () => {
                 required
                 className="w-full px-3.5 py-2.5 rounded-lg outline-none transition border border-gray-200 text-gray-900 bg-white focus:border-indigo-600"
                 style={{ fontSize: "16px" }}
-                placeholder="Full name"
+                placeholder="Name"
               />
             </div>
 
@@ -76,15 +84,38 @@ const Signup = () => {
 
             <div>
               <label className="block text-xs font-medium mb-1.5 text-gray-700">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="w-full px-3.5 py-2.5 pr-16 rounded-lg outline-none transition border border-gray-200 text-gray-900 bg-white focus:border-indigo-600"
+                  style={{ fontSize: "16px" }}
+                  placeholder="At least 6 characters"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-indigo-600"
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium mb-1.5 text-gray-700">Confirm password</label>
               <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={6}
                 className="w-full px-3.5 py-2.5 rounded-lg outline-none transition border border-gray-200 text-gray-900 bg-white focus:border-indigo-600"
                 style={{ fontSize: "16px" }}
-                placeholder="At least 6 characters"
+                placeholder="Re-enter your password"
               />
             </div>
 
