@@ -29,6 +29,9 @@ const Navbar = () => {
 
         {/* Desktop right side */}
         <div className="hidden sm:flex items-center gap-5">
+          <Link to="/" className="text-sm text-gray-600">
+            Home
+          </Link>
           {user?.role === "admin" && (
             <Link to="/admin" className="text-sm text-gray-600">
               Admin
@@ -94,6 +97,9 @@ const Navbar = () => {
       {/* Mobile dropdown */}
       {menuOpen && (
         <div className="sm:hidden flex flex-col gap-3 mt-4 pt-4 border-t border-gray-100">
+          <Link to="/" className="text-sm text-gray-600" onClick={() => setMenuOpen(false)}>
+            Home
+          </Link>
           {user?.role === "admin" && (
             <Link to="/admin" className="text-sm text-gray-600" onClick={() => setMenuOpen(false)}>
               Admin
