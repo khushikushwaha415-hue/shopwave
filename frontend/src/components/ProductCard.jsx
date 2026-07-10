@@ -1,12 +1,37 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useCart } from "../context/CartContext";
 
 const ProductCard = ({ product }) => {
+  const { addToCart } = useCart();
+  const [wishlisted, setWishlisted] = useState(false);
+  const [adding, setAdding] = useState(false);
+
+  const toggleWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setWishlisted(!wishlisted);
+  };
+
+  const handleQuickAdd = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setAdding(true);
+    try {
+      await addToCart(product._id, 1);
+    } catch (err) {
+      // silently ignore for now
+    } finally {
+      setAdding(false);
+    }
+  };
+
   return (
     <Link
       to={`/products/${product._id}`}
-      className="block bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300 transition"
+      className="block bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300 transition relative"
     >
-      <div className="aspect-square bg-gray-100 flex items-center justify-center">
+      <div className="aspect-square bg-gray-100 flex items-center justify-center relative">
         {product.image ? (
           <img
             src={product.image}
@@ -16,11 +41,35 @@ const ProductCard = ({ product }) => {
         ) : (
           <span className="text-gray-400 text-sm">No image</span>
         )}
+
+        <button
+          onClick={toggleWishlist}
+          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-sm"
+          aria-label="Toggle wishlist"
+        >
+          {wishlisted ? "❤️" : "🤍"}
+        </button>
       </div>
+
       <div className="p-3">
         <p className="text-xs text-gray-500 mb-1">{product.category}</p>
         <h3 className="text-sm font-medium text-gray-900 truncate">{product.name}</h3>
-        <p className="text-sm font-medium text-gray-900 mt-1">₹{product.price}</p>
+
+        <div className="flex items-center gap-1 mt-1">
+          <span className="text-xs text-amber-500">★★★★☆</span>
+          <span className="text-xs text-gray-400">(4.2)</span>
+        </div>
+
+        <div className="flex items-center justify-between mt-2">
+          <p className="text-sm font-medium text-gray-900">₹{product.price}</p>
+          <button
+            onClick={handleQuickAdd}
+            disabled={adding}
+            className="text-xs font-medium px-2.5 py-1.5 rounded-lg text-white bg-gray-900 disabled:opacity-50"
+          >
+            {adding ? "..." : "+ Cart"}
+          </button>
+        </div>
       </div>
     </Link>
   );
