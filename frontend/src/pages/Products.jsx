@@ -36,10 +36,25 @@ const Products = () => {
   }, [search, category]);
 
   const categories = [...new Set(products.map((p) => p.category))];
+  const featuredProducts = products.slice(0, 4);
+  const isBrowsing = search || category;
 
   return (
     <div className="min-h-screen bg-[#fafaf8]">
       <Navbar />
+
+      {!isBrowsing && (
+        <div className="bg-gray-900 px-4 sm:px-8 py-14">
+          <div className="max-w-6xl mx-auto text-center">
+            <h1 className="text-2xl sm:text-3xl font-medium text-white mb-2">
+              Everything you need, one cart away.
+            </h1>
+            <p className="text-sm text-gray-400">
+              Shop the latest picks, curated just for you.
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8">
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -77,11 +92,27 @@ const Products = () => {
         ) : products.length === 0 ? (
           <p className="text-sm text-gray-500">No products found.</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
+          <>
+            {!isBrowsing && featuredProducts.length > 0 && (
+              <div className="mb-10">
+                <h2 className="text-lg font-medium text-gray-900 mb-4">Featured products</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {featuredProducts.map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <h2 className="text-lg font-medium text-gray-900 mb-4">
+              {isBrowsing ? "Results" : "All products"}
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
