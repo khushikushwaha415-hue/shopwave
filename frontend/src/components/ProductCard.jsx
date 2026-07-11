@@ -1,16 +1,41 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
+
+const getWishlist = () => {
+  try {
+    return JSON.parse(localStorage.getItem("wishlist") || "[]");
+  } catch {
+    return [];
+  }
+};
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const [wishlisted, setWishlisted] = useState(false);
   const [adding, setAdding] = useState(false);
 
+  useEffect(() => {
+    const wishlist = getWishlist();
+    setWishlisted(wishlist.includes(product._id));
+  }, [product._id]);
+
   const toggleWishlist = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setWishlisted(!wishlisted);
+
+    const wishlist = getWishlist();
+    let updated;
+
+    if (wishlist.includes(product._id)) {
+      updated = wishlist.filter((id) => id !== product._id);
+      setWishlisted(false);
+    } else {
+      updated = [...wishlist, product._id];
+      setWishlisted(true);
+    }
+
+    localStorage.setItem("wishlist", JSON.stringify(updated));
   };
 
   const handleQuickAdd = async (e) => {
