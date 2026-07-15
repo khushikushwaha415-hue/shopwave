@@ -3,18 +3,19 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
+import { useToast } from "../context/ToastContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { showToast } = useToast();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [adding, setAdding] = useState(false);
-  const [message, setMessage] = useState("");
 
   const [related, setRelated] = useState([]);
 
@@ -70,12 +71,11 @@ const ProductDetail = () => {
 
   const handleAddToCart = async () => {
     setAdding(true);
-    setMessage("");
     try {
       await addToCart(product._id, quantity);
-      setMessage("Added to cart!");
+      showToast("Added to cart!");
     } catch (err) {
-      setMessage("Failed to add to cart.");
+      showToast("Failed to add to cart.", "error");
     } finally {
       setAdding(false);
     }
@@ -90,8 +90,11 @@ const ProductDetail = () => {
       setNewComment("");
       setNewRating(5);
       fetchReviews();
+      showToast("Review submitted!");
     } catch (err) {
-      setReviewError(err.response?.data?.message || "Failed to submit review.");
+      const msg = err.response?.data?.message || "Failed to submit review.";
+      setReviewError(msg);
+      showToast(msg, "error");
     } finally {
       setSubmittingReview(false);
     }
@@ -116,7 +119,7 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafaf8]">
+    <div className="min-h-screen bg-[#fafaf8] fade-in">
       <Navbar />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8">
@@ -181,8 +184,6 @@ const ProductDetail = () => {
                 >
                   {adding ? "Adding..." : "Add to cart"}
                 </button>
-
-                {message && <p className="text-sm text-green-600 mt-3">{message}</p>}
               </>
             )}
           </div>

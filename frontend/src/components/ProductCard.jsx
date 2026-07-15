@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
+import { useToast } from "../context/ToastContext";
 
 const getWishlist = () => {
   try {
@@ -12,6 +13,7 @@ const getWishlist = () => {
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
+  const { showToast } = useToast();
   const [wishlisted, setWishlisted] = useState(false);
   const [adding, setAdding] = useState(false);
 
@@ -30,9 +32,11 @@ const ProductCard = ({ product }) => {
     if (wishlist.includes(product._id)) {
       updated = wishlist.filter((id) => id !== product._id);
       setWishlisted(false);
+      showToast("Removed from wishlist");
     } else {
       updated = [...wishlist, product._id];
       setWishlisted(true);
+      showToast("Added to wishlist");
     }
 
     localStorage.setItem("wishlist", JSON.stringify(updated));
@@ -44,8 +48,9 @@ const ProductCard = ({ product }) => {
     setAdding(true);
     try {
       await addToCart(product._id, 1);
+      showToast("Added to cart!");
     } catch (err) {
-      // silently ignore for now
+      showToast("Failed to add to cart.", "error");
     } finally {
       setAdding(false);
     }

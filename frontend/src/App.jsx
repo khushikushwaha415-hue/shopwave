@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import { ToastProvider } from "./context/ToastContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Products from "./pages/Products";
@@ -93,11 +94,13 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </CartProvider>
+      <ToastProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </CartProvider>
+      </ToastProvider>
     </AuthProvider>
   );
 }
